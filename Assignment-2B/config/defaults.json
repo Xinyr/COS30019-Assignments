@@ -1,0 +1,12 @@
+{
+  "default_model": "random_forest",
+  "default_origin": "4335",
+  "default_destination": "3217",
+  "default_date": "10/15/2006",
+  "default_time": "08:00",
+  "default_search_method": "astar",
+  "default_top_k": 5,
+  "default_use_congested_branch": false,
+  "default_intersection_delay_seconds": 30,
+  "default_speed_limit_kmh": 60
+}

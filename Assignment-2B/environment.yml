@@ -1,0 +1,15 @@
+name: a2b-gru
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - xlrd
+  - ipykernel
+  - notebook
+  - pip
+  - pip:
+      - tensorflow==2.19.0

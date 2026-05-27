@@ -1,0 +1,70 @@
+{
+  "name": "Boroondara Subgraph",
+  "description": "Team subgraph used for Assignment 2B routing. Coordinates are a mix of traffic CSV lookups and manual approximations where the supplied statewide files were inconsistent.",
+  "nodes": {
+    "4335": {
+      "label": "HIGH/CHARLES",
+      "coordinates": [145.036485486, -37.804735991],
+      "prediction_scats_ids": ["4335"]
+    },
+    "3003": {
+      "label": "BARKERS/GLENFERRIE",
+      "coordinates": [145.037025926, -37.813613097],
+      "prediction_scats_ids": ["3001"]
+    },
+    "3004": {
+      "label": "BARKERS/AUBURN/WRIXON",
+      "coordinates": [145.046283434, -37.815881198],
+      "prediction_scats_ids": ["3002"]
+    },
+    "4260": {
+      "label": "AUBURN/RATHMINES/LIDDIARD",
+      "coordinates": [145.045612797, -37.819384798],
+      "prediction_scats_ids": ["4266", "3120"]
+    },
+    "3120": {
+      "label": "BURKE/CANTERBURY",
+      "coordinates": [145.058642409, -37.821132101],
+      "prediction_scats_ids": ["3120"]
+    },
+    "3121": {
+      "label": "CANTERBURY NR LOCH",
+      "coordinates": [145.062149911, -37.821834163],
+      "prediction_scats_ids": ["3122"]
+    },
+    "4037": {
+      "label": "BURKE NR TORRINGTON",
+      "coordinates": [145.059143516, -37.818492099],
+      "prediction_scats_ids": ["3120"]
+    },
+    "3798": {
+      "label": "WHITEHORSE NR CAMPBELL",
+      "coordinates": [145.0710175, -37.811604303],
+      "prediction_scats_ids": ["4034"]
+    },
+    "3819": {
+      "label": "WHITEHORSE NR AUSTIN",
+      "coordinates": [145.0765, -37.8158],
+      "prediction_scats_ids": ["4063"]
+    },
+    "3217": {
+      "label": "HIGH/ALLENBY",
+      "coordinates": [145.0735, -37.8249],
+      "proxy_nodes": ["3819", "3121"]
+    }
+  },
+  "edges": [
+    ["4335", "3003"],
+    ["4335", "3798"],
+    ["3003", "3004"],
+    ["3004", "4260"],
+    ["3004", "4037"],
+    ["4260", "3120"],
+    ["4037", "3120"],
+    ["3798", "4037"],
+    ["3798", "3819"],
+    ["3120", "3121"],
+    ["3121", "3217"],
+    ["3819", "3217"]
+  ]
+}
