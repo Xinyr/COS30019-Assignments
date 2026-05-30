@@ -9,16 +9,15 @@ from tbrgs.router import RoutingEngine
 class DummyPredictionService:
     def predict_all_node_flows(self, model_name: str, predict_day: str, time_index: int) -> dict[str, float]:
         return {
-            "4335": 20.0,
-            "3003": 18.0,
-            "3004": 16.0,
-            "4260": 25.0,
             "3120": 24.0,
-            "3121": 21.0,
-            "4037": 19.0,
-            "3798": 15.0,
-            "3819": 14.0,
-            "3217": 17.0,
+            "3122": 21.0,
+            "3126": 19.0,
+            "3127": 18.0,
+            "3180": 16.0,
+            "3662": 20.0,
+            "3804": 23.0,
+            "3812": 22.0,
+            "4032": 17.0,
         }
 
 
@@ -40,21 +39,21 @@ class RouterTests(unittest.TestCase):
 
     def test_recommend_routes_returns_results(self) -> None:
         result = self.engine.recommend_routes(
-            origin="4335",
-            destination="3217",
+            origin="3662",
+            destination="3126",
             predict_day="10/15/2006",
             time_text="08:00",
             model_name="random_forest",
             top_k=3,
         )
-        self.assertEqual(result["origin"], "4335")
-        self.assertEqual(result["destination"], "3217")
+        self.assertEqual(result["origin"], "3662")
+        self.assertEqual(result["destination"], "3126")
         self.assertGreaterEqual(len(result["routes"]), 1)
 
     def test_top_k_is_respected(self) -> None:
         result = self.engine.recommend_routes(
-            origin="4335",
-            destination="3217",
+            origin="3662",
+            destination="3126",
             predict_day="10/15/2006",
             time_text="08:00",
             model_name="random_forest",
@@ -64,8 +63,8 @@ class RouterTests(unittest.TestCase):
 
     def test_routes_are_ranked_in_order(self) -> None:
         result = self.engine.recommend_routes(
-            origin="4335",
-            destination="3217",
+            origin="3662",
+            destination="3126",
             predict_day="10/15/2006",
             time_text="08:00",
             model_name="random_forest",
@@ -76,8 +75,8 @@ class RouterTests(unittest.TestCase):
 
     def test_edge_metrics_are_positive(self) -> None:
         result = self.engine.recommend_routes(
-            origin="4335",
-            destination="3217",
+            origin="3662",
+            destination="3126",
             predict_day="10/15/2006",
             time_text="08:00",
             model_name="random_forest",

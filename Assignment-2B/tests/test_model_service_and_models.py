@@ -16,13 +16,13 @@ class ModelServiceAndModelTests(unittest.TestCase):
         cls.service = TrafficPredictionService(cls.network)
 
     def test_model_service_has_relevant_source_sites(self) -> None:
-        self.assertIn("4335", self.service.relevant_source_sites)
+        self.assertIn("3120", self.service.relevant_source_sites)
 
     def test_model_service_has_relevant_locations(self) -> None:
         self.assertGreater(len(self.service.relevant_locations), 0)
 
     def test_representative_location_lookup(self) -> None:
-        location = self.service.get_representative_location("4335")
+        location = self.service.get_representative_location("3120")
         self.assertIsInstance(location, str)
         self.assertTrue(location)
 

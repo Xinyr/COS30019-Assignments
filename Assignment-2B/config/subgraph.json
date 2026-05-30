@@ -1,70 +1,62 @@
 {
   "name": "Boroondara Subgraph",
-  "description": "Team subgraph used for Assignment 2B routing. Coordinates are a mix of traffic CSV lookups and manual approximations where the supplied statewide files were inconsistent.",
+  "description": "Updated team subgraph built from SCATS sites that are all present in the October 2006 workbook. Coordinates are averaged from the SCATS approach records, and edges are chosen to follow the most plausible Burke, Balwyn, Canterbury, Trafalgar, Camberwell, and Harp/Doncaster road links in the Boroondara map.",
   "nodes": {
-    "4335": {
-      "label": "HIGH/CHARLES",
-      "coordinates": [145.036485486, -37.804735991],
-      "prediction_scats_ids": ["4335"]
-    },
-    "3003": {
-      "label": "BARKERS/GLENFERRIE",
-      "coordinates": [145.037025926, -37.813613097],
-      "prediction_scats_ids": ["3001"]
-    },
-    "3004": {
-      "label": "BARKERS/AUBURN/WRIXON",
-      "coordinates": [145.046283434, -37.815881198],
-      "prediction_scats_ids": ["3002"]
-    },
-    "4260": {
-      "label": "AUBURN/RATHMINES/LIDDIARD",
-      "coordinates": [145.045612797, -37.819384798],
-      "prediction_scats_ids": ["4266", "3120"]
-    },
     "3120": {
       "label": "BURKE/CANTERBURY",
-      "coordinates": [145.058642409, -37.821132101],
+      "coordinates": [145.057288, -37.822895],
       "prediction_scats_ids": ["3120"]
     },
-    "3121": {
-      "label": "CANTERBURY NR LOCH",
-      "coordinates": [145.062149911, -37.821834163],
+    "3122": {
+      "label": "CANTERBURY/STANHOPE",
+      "coordinates": [145.064393, -37.823857],
       "prediction_scats_ids": ["3122"]
     },
-    "4037": {
-      "label": "BURKE NR TORRINGTON",
-      "coordinates": [145.059143516, -37.818492099],
-      "prediction_scats_ids": ["3120"]
+    "3126": {
+      "label": "CANTERBURY/WARRIGAL",
+      "coordinates": [145.098577, -37.827847],
+      "prediction_scats_ids": ["3126"]
     },
-    "3798": {
-      "label": "WHITEHORSE NR CAMPBELL",
-      "coordinates": [145.0710175, -37.811604303],
-      "prediction_scats_ids": ["4034"]
+    "3127": {
+      "label": "CANTERBURY/BALWYN",
+      "coordinates": [145.077947, -37.825227],
+      "prediction_scats_ids": ["3127"]
     },
-    "3819": {
-      "label": "WHITEHORSE NR AUSTIN",
-      "coordinates": [145.0765, -37.8158],
-      "prediction_scats_ids": ["4063"]
+    "3180": {
+      "label": "DONCASTER/BALWYN",
+      "coordinates": [145.083507, -37.796213],
+      "prediction_scats_ids": ["3180"]
     },
-    "3217": {
-      "label": "HIGH/ALLENBY",
-      "coordinates": [145.0735, -37.8249],
-      "proxy_nodes": ["3819", "3121"]
+    "3662": {
+      "label": "HIGH/PRINCESS",
+      "coordinates": [145.027457, -37.808953],
+      "prediction_scats_ids": ["3662"]
+    },
+    "3804": {
+      "label": "RIVERSDALE/TRAFALGAR",
+      "coordinates": [145.062392, -37.833642],
+      "prediction_scats_ids": ["3804"]
+    },
+    "3812": {
+      "label": "CAMBERWELL/TRAFALGAR",
+      "coordinates": [145.060865, -37.837490],
+      "prediction_scats_ids": ["3812"]
+    },
+    "4032": {
+      "label": "BURKE/HARP",
+      "coordinates": [145.061230, -37.802297],
+      "prediction_scats_ids": ["4032"]
     }
   },
   "edges": [
-    ["4335", "3003"],
-    ["4335", "3798"],
-    ["3003", "3004"],
-    ["3004", "4260"],
-    ["3004", "4037"],
-    ["4260", "3120"],
-    ["4037", "3120"],
-    ["3798", "4037"],
-    ["3798", "3819"],
-    ["3120", "3121"],
-    ["3121", "3217"],
-    ["3819", "3217"]
+    ["3662", "4032"],
+    ["4032", "3180"],
+    ["4032", "3120"],
+    ["3180", "3127"],
+    ["3120", "3122"],
+    ["3122", "3127"],
+    ["3127", "3126"],
+    ["3122", "3812"],
+    ["3812", "3804"]
   ]
 }

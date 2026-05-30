@@ -15,10 +15,12 @@ if TYPE_CHECKING:
 
 
 class TBRGSGui(tk.Tk):
+    FOREGROUND_TAG = "node_foreground"
+
     def __init__(self):
         super().__init__()
         self.title("Traffic-Based Route Guidance System")
-        self.geometry("1200x760")
+        self.geometry("1320x840")
 
         self.defaults = load_defaults()
         self.network = SubgraphNetwork()
@@ -28,7 +30,13 @@ class TBRGSGui(tk.Tk):
             f"{node_id} - {node.label}" for node_id, node in sorted(self.network.nodes.items())
         ]
         self.label_to_id = {label: label.split(" - ", 1)[0] for label in self.node_labels}
-        self.positions = self.network.scaled_positions(width=640, height=480, padding=45)
+        self.canvas_width = 930
+        self.canvas_height = 560
+        self.positions = self.network.scaled_positions(
+            width=self.canvas_width,
+            height=self.canvas_height,
+            padding=90,
+        )
         self.route_line_ids: list[int] = []
         self.node_canvas_ids: dict[str, int] = {}
         self.worker_queue: queue.Queue[tuple[str, object]] = queue.Queue()
@@ -116,7 +124,14 @@ class TBRGSGui(tk.Tk):
         self.status_var = tk.StringVar(value="Ready.")
         ttk.Label(controls, textvariable=self.status_var, wraplength=250).pack(anchor="w", pady=(12, 0))
 
-        self.canvas = tk.Canvas(viewer, width=680, height=500, background="white", highlightthickness=1, highlightbackground="#cccccc")
+        self.canvas = tk.Canvas(
+            viewer,
+            width=self.canvas_width,
+            height=self.canvas_height,
+            background="white",
+            highlightthickness=1,
+            highlightbackground="#cccccc",
+        )
         self.canvas.pack(fill="x")
 
         ttk.Label(viewer, text="Route Output").pack(anchor="w", pady=(12, 4))
@@ -131,6 +146,7 @@ class TBRGSGui(tk.Tk):
         self.canvas.delete("all")
         self.route_line_ids.clear()
         self.node_canvas_ids.clear()
+        text_placements = self.network.text_placements()
 
         for start, neighbors in self.network.adjacency.items():
             for end in neighbors:
@@ -141,10 +157,31 @@ class TBRGSGui(tk.Tk):
 
         for node_id, node in self.network.nodes.items():
             x, y = self.positions[node_id]
-            oval = self.canvas.create_oval(x - 10, y - 10, x + 10, y + 10, fill="#111111")
+            placement = text_placements[node_id]
+            oval = self.canvas.create_oval(
+                x - 10,
+                y - 10,
+                x + 10,
+                y + 10,
+                fill="#111111",
+                tags=(self.FOREGROUND_TAG,),
+            )
             self.node_canvas_ids[node_id] = oval
-            self.canvas.create_text(x, y - 18, text=node_id, font=("Arial", 9, "bold"))
-            self.canvas.create_text(x, y + 18, text=node.label, font=("Arial", 8), width=120)
+            self._create_text_with_background(
+                x + placement.id_dx,
+                y + placement.id_dy,
+                text=node_id,
+                font=("Arial", 9, "bold"),
+                anchor=self._canvas_anchor(placement.id_dx, placement.id_dy),
+            )
+            self._create_text_with_background(
+                x + placement.label_dx,
+                y + placement.label_dy,
+                text=self.network.format_canvas_label(node.label),
+                font=("Arial", 8),
+                anchor=self._canvas_anchor(placement.label_dx, placement.label_dy),
+                justify=self._canvas_justify(placement.label_dx),
+            )
 
     def _draw_routes(self, routes: list[RouteRecommendation]) -> None:
         for item_id in self.route_line_ids:
@@ -160,6 +197,62 @@ class TBRGSGui(tk.Tk):
                 self.route_line_ids.append(
                     self.canvas.create_line(x1, y1, x2, y2, fill=color, width=4 if idx == 0 else 2)
                 )
+        self.canvas.tag_raise(self.FOREGROUND_TAG)
+
+    def _create_text_with_background(
+        self,
+        x: float,
+        y: float,
+        text: str,
+        font: tuple[str, int] | tuple[str, int, str],
+        anchor: str = "center",
+        justify: str = "center",
+    ) -> None:
+        text_id = self.canvas.create_text(
+            x,
+            y,
+            text=text,
+            font=font,
+            anchor=anchor,
+            justify=justify,
+            tags=(self.FOREGROUND_TAG,),
+        )
+        bbox = self.canvas.bbox(text_id)
+        if bbox is None:
+            return
+        left, top, right, bottom = bbox
+        bg_id = self.canvas.create_rectangle(
+            left - 5,
+            top - 3,
+            right + 5,
+            bottom + 3,
+            fill="white",
+            outline="",
+            tags=(self.FOREGROUND_TAG,),
+        )
+        self.canvas.tag_lower(bg_id, text_id)
+
+    @staticmethod
+    def _canvas_anchor(dx: float, dy: float) -> str:
+        vertical = ""
+        horizontal = ""
+        if dy > 6:
+            vertical = "n"
+        elif dy < -6:
+            vertical = "s"
+        if dx > 8:
+            horizontal = "w"
+        elif dx < -8:
+            horizontal = "e"
+        return (vertical + horizontal) or "center"
+
+    @staticmethod
+    def _canvas_justify(dx: float) -> str:
+        if dx > 8:
+            return "left"
+        if dx < -8:
+            return "right"
+        return "center"
 
     def _run_route_search_worker(self, args: dict) -> None:
         try:

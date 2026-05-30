@@ -25,28 +25,28 @@ class ConfigAndNetworkTests(unittest.TestCase):
         self.assertTrue(expected.issubset(self.defaults))
 
     def test_subgraph_has_expected_node_count(self) -> None:
-        self.assertEqual(len(self.subgraph["nodes"]), 10)
+        self.assertEqual(len(self.subgraph["nodes"]), 9)
 
     def test_network_contains_expected_nodes(self) -> None:
-        for node_id in ["4335", "3003", "3120", "3217"]:
+        for node_id in ["3662", "4032", "3120", "3126"]:
             self.assertIn(node_id, self.network.nodes)
 
-    def test_neighbors_for_4335(self) -> None:
-        self.assertEqual(self.network.neighbors("4335"), ["3003", "3798"])
+    def test_neighbors_for_4032(self) -> None:
+        self.assertEqual(self.network.neighbors("4032"), ["3120", "3180", "3662"])
 
     def test_neighbors_for_3120(self) -> None:
-        self.assertEqual(self.network.neighbors("3120"), ["3121", "4037", "4260"])
+        self.assertEqual(self.network.neighbors("3120"), ["3122", "4032"])
 
     def test_distance_is_positive_and_symmetric(self) -> None:
-        forward = self.network.distance_km("4335", "3003")
-        backward = self.network.distance_km("3003", "4335")
+        forward = self.network.distance_km("3120", "3122")
+        backward = self.network.distance_km("3122", "3120")
         self.assertGreater(forward, 0.0)
         self.assertAlmostEqual(forward, backward, places=9)
 
     def test_known_path_exists(self) -> None:
-        paths = self.network.all_simple_paths("4335", "3217")
+        paths = self.network.all_simple_paths("3662", "3126")
         self.assertIn(
-            ["4335", "3798", "3819", "3217"],
+            ["3662", "4032", "3180", "3127", "3126"],
             paths,
         )
 
